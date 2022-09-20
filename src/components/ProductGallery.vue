@@ -11,7 +11,7 @@ export default {
   props: ['title', 'color'],
   computed: {
     gallery() {
-      return this.color.gallery ? this.color.gallery : [{ file: { url: '/img/not-img.webp' } }];
+      return this.color.gallery ? this.color.gallery : [{ file: { url: '/moire/img/not-img.webp' } }];
     },
   },
 };
