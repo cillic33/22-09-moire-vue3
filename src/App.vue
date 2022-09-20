@@ -1,19 +1,39 @@
 <template>
-  <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
+  <div>
+
+    <BaseHeader/>
+
     <router-view/>
+
+    <BaseFooter/>
+
   </div>
 </template>
 
+<script>
+import BaseHeader from '@/components/BaseHeader.vue';
+import BaseFooter from '@/components/BaseFooter.vue';
+
+export default {
+  components: { BaseHeader, BaseFooter },
+};
+</script>
+
 <style lang="stylus">
-#app
-  font-family Avenir, Helvetica, Arial, sans-serif
-  -webkit-font-smoothing antialiased
-  -moz-osx-font-smoothing grayscale
-  text-align center
-  color #2c3e50
-  margin-top 60px
+.content
+  min-height calc(100vh - 442px)
+
+.note
+  &__error
+    color red
+
+  &__centered
+    text-align center
+    font-size 14px
+
+    .fulfilling-bouncing-circle-spinner
+      margin 0 auto
+
+.transition-fade-duration
+  animation-duration: 0.3s
 </style>
