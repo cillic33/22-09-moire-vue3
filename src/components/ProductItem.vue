@@ -18,11 +18,11 @@
 
     <div>
       <br>
-      <div v-for="material in product.materials" :key="material.id">
+      <div v-for="material in product.materials" :key="'productMaterial'+material.id">
         {{ material.title }}
       </div>
       <br>
-      <div v-for="season in product.seasons" :key="season.id">
+      <div v-for="season in product.seasons" :key="'productSeason'+season.id">
         {{ season.title }}
       </div>
     </div>

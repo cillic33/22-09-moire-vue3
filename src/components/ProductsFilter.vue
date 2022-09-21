@@ -1,6 +1,8 @@
 <template>
   <aside class="filter">
     <form class="filter__form form" action="#" method="get" @submit.prevent="submitFilter">
+
+      <!--///////// Цена /////////-->
       <fieldset class="form__block">
         <legend class="form__legend">Цена</legend>
         <label class="form__label form__label--price" for="filterInputMinPrice">
@@ -194,7 +196,7 @@
       <button class="filter__submit button button--primery" type="submit">
         Применить
       </button>
-      <button class="filter__reset button button--second" type="reset"
+      <button v-if="isFieldsSet" class="filter__reset button button--second" type="reset"
               @click.prevent="resetFilter">
         Сбросить
       </button>
@@ -236,6 +238,8 @@ export default {
       isSeasonsDataLoading: false,
       seasonsDataLoadingFail: '',
       checkedSeasons: [],
+
+      isFieldsSet: false,
     };
   },
   computed: {
@@ -261,6 +265,17 @@ export default {
       this.$emit('update:materialIds', this.checkedMaterials);
       this.$emit('update:seasonIds', this.checkedSeasons);
       this.$emit('update:page', 1);
+
+      if (this.currentMinPrice > 0
+        || this.currentMaxPrice > 0
+        || this.currentCategoryId > 0
+        || this.checkedColors.length > 0
+        || this.checkedMaterials.length > 0
+        || this.checkedSeasons.length > 0) {
+        this.isFieldsSet = true;
+      } else {
+        this.isFieldsSet = false;
+      }
     },
     resetFilter() {
       this.currentMinPrice = 0;
