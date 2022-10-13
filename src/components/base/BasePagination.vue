@@ -1,10 +1,12 @@
 <template>
   <ul class="catalog__pagination pagination">
     <li class="pagination__item">
-      <button class="pagination__link pagination__link--arrow"
-              :class="{'pagination__link--disabled': currentPage === 1}"
-              aria-label="Предыдущая страница"
-              @click="gotoPage(currentPage - 1)">
+      <button
+        class="pagination__link pagination__link--arrow"
+        :class="{ 'pagination__link--disabled': currentPage === 1 }"
+        aria-label="Предыдущая страница"
+        @click="gotoPage(currentPage - 1)"
+      >
         <svg width="8" height="14" fill="currentColor">
           <use xlink:href="#icon-arrow-left"></use>
         </svg>
@@ -12,18 +14,21 @@
     </li>
 
     <li class="pagination__item" v-for="page in countPages" :key="page">
-      <button class="pagination__link"
-         :class="{'pagination__link--current': page === currentPage}"
-         @click="gotoPage(page)">
+      <button
+        class="pagination__link"
+        :class="{ 'pagination__link--current': page === currentPage }"
+        @click="gotoPage(page)"
+      >
         {{ page }}
       </button>
     </li>
 
     <li class="pagination__item">
-      <button class="pagination__link pagination__link--arrow"
-              :class="{'pagination__link--disabled': currentPage === countPages}"
-              aria-label="Следующая страница"
-              @click="gotoPage(currentPage + 1)"
+      <button
+        class="pagination__link pagination__link--arrow"
+        :class="{ 'pagination__link--disabled': currentPage === countPages }"
+        aria-label="Следующая страница"
+        @click="gotoPage(currentPage + 1)"
       >
         <svg width="8" height="14" fill="currentColor">
           <use xlink:href="#icon-arrow-right"></use>
@@ -35,7 +40,21 @@
 
 <script>
 export default {
-  props: ['productsCount', 'productsPerPage', 'value'],
+  props: {
+    productsCount: {
+      type: Number,
+      required: true,
+    },
+    productsPerPage: {
+      type: Number,
+      required: true,
+    },
+    value: {
+      type: Number,
+      required: true,
+      default: 1,
+    },
+  },
   computed: {
     countPages() {
       return Math.ceil(this.productsCount / this.productsPerPage);
@@ -45,13 +64,13 @@ export default {
         return this.value;
       },
       set(value) {
-        this.$emit('input', value);
+        this.$emit("input", value);
       },
     },
   },
   methods: {
     gotoPage(page) {
-      this.currentPage = (page > 0 && page <= this.countPages) ? page : this.currentPage;
+      this.currentPage = page > 0 && page <= this.countPages ? page : this.currentPage;
     },
   },
 };

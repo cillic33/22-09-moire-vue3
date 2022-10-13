@@ -1,18 +1,16 @@
 <template>
   <div>
+    <BaseHeader />
 
-    <BaseHeader/>
+    <router-view />
 
-    <router-view/>
-
-    <BaseFooter/>
-
+    <BaseFooter />
   </div>
 </template>
 
 <script>
-import BaseHeader from '@/components/BaseHeader.vue';
-import BaseFooter from '@/components/BaseFooter.vue';
+import BaseHeader from "@/components/base/BaseHeader.vue";
+import BaseFooter from "@/components/base/BaseFooter.vue";
 
 export default {
   components: { BaseHeader, BaseFooter },

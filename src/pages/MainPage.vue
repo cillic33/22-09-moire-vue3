@@ -1,67 +1,73 @@
 <template>
   <main class="content container">
-
-    <BaseBreadcrumbs :products-count="productsCount"></BaseBreadcrumbs>
+    <div class="content__top">
+      <div class="content__row">
+        <h1 class="content__title">Каталог</h1>
+        <span class="content__info"> {{ productsCount }} товара </span>
+      </div>
+    </div>
 
     <div class="content__catalog">
-      <ProductsFilter :min-price.sync="minPrice"
-                      :max-price.sync="maxPrice"
-                      :category-id.sync="categoryId"
-                      :page.sync="currentPage"
-                      :color-ids.sync="colorIds"
-                      :material-ids.sync="materialIds"
-                      :season-ids.sync="seasonIds" />
+      <ProductsFilter
+        :min-price.sync="minPrice"
+        :max-price.sync="maxPrice"
+        :category-id.sync="categoryId"
+        :page.sync="currentPage"
+        :color-ids.sync="colorIds"
+        :material-ids.sync="materialIds"
+        :season-ids.sync="seasonIds"
+      />
 
       <div>
         <transition name="fade" mode="out-in">
-          <div v-if="isProductsDataLoading"
-               key="isProductsDataLoading"
-               class="note__centered transition-fade-duration">
+          <div
+            v-if="isProductsDataLoading"
+            key="isProductsDataLoading"
+            class="note__centered transition-fade-duration"
+          >
             <fulfilling-bouncing-circle-spinner
               :animation-duration="4000"
               :size="30"
-              :color="'#e02d71'"/>
-            <br>
+              :color="'#e02d71'"
+            />
+            <br />
             Товары загружаются...
           </div>
 
-          <div v-else-if="productsDataLoadingFail"
-               key="productsDataLoadingFail"
-               class="note__error note__centered transition-fade-duration">
-            Произошла ошибка загрузки товаров:<br>
-            "{{ productsDataLoadingFail }}"<br><br>
+          <div
+            v-else-if="productsDataLoadingFail"
+            key="productsDataLoadingFail"
+            class="note__error note__centered transition-fade-duration"
+          >
+            Произошла ошибка загрузки товаров:<br />
+            "{{ productsDataLoadingFail }}"<br /><br />
             <button type="button" @click.prevent="loadProductsData">Попробуйте еще раз</button>
           </div>
 
-          <div v-else key="products"
-               class="transition-fade-duration">
+          <div v-else key="products" class="transition-fade-duration">
             <div v-if="productsCount">
-              <ProductsList :products="products"/>
+              <ProductsList :products="products" />
               <BasePagination
                 v-if="productsCount > productsPerPage"
                 :products-count="productsCount"
                 :products-per-page="productsPerPage"
-                v-model="currentPage"/>
+                v-model="currentPage"
+              />
             </div>
             <div v-else сlass="note__error">Ничего не найдено</div>
           </div>
         </transition>
-
       </div>
-
     </div>
   </main>
 </template>
 
 <script>
-import ProductsList from '@/components/ProductsList.vue';
-import ProductsFilter from '@/components/ProductsFilter.vue';
-import BasePagination from '@/components/BasePagination.vue';
-import BaseBreadcrumbs from '@/components/BaseBreadcrumbs.vue';
-import axios from 'axios';
-import { FulfillingBouncingCircleSpinner } from 'epic-spinners';
-
-require('vue2-animate/dist/vue2-animate.min.css');
+import ProductsList from "@/components/products/ProductsList.vue";
+import ProductsFilter from "@/components/products/ProductsFilter.vue";
+import BasePagination from "@/components/base/BasePagination.vue";
+import { FulfillingBouncingCircleSpinner } from "epic-spinners";
+import { mapState, mapActions } from "vuex";
 
 export default {
   components: {
@@ -69,14 +75,9 @@ export default {
     ProductsFilter,
     BasePagination,
     FulfillingBouncingCircleSpinner,
-    BaseBreadcrumbs,
   },
   data() {
     return {
-      productsData: {},
-      isProductsDataLoading: false,
-      productsDataLoadingFail: '',
-
       currentPage: 1,
       productsPerPage: 12,
 
@@ -90,62 +91,46 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      productsData: (state) => state.moduleProducts.productsData,
+      isProductsDataLoading: (state) => state.moduleProducts.isProductsDataLoading,
+      productsDataLoadingFail: (state) => state.moduleProducts.productsDataLoadingFail,
+    }),
     products() {
       return this.productsData ? this.productsData.items : [];
     },
     productsCount() {
-      return this.productsData.pagination ? this.productsData.pagination.total : 0;
+      return this.productsData ? this.productsData.pagination.total : 0;
+    },
+    watchableStates() {
+      return `${this.currentPage}${this.minPrice}${this.maxPrice}${this.categoryId}${this.colorIds}${this.materialIds}${this.seasonIds}`;
     },
   },
   methods: {
-    async loadProductsData() {
-      try {
-        this.isProductsDataLoading = true;
-        this.productsDataLoadingFail = '';
-        const response = await axios({
-          method: 'get',
-          url: 'https://vue-moire.skillbox.cc/api/products',
-          params: {
-            limit: this.productsPerPage,
-            page: this.currentPage,
-            minPrice: this.minPrice,
-            maxPrice: this.maxPrice,
-            categoryId: this.categoryId,
-            colorIds: this.colorIds,
-            materialIds: this.materialIds,
-            seasonIds: this.seasonIds,
-          },
-          timeout: 2000,
-        });
-        this.productsData = response.data;
-      } catch (error) {
-        this.productsDataLoadingFail = error.message;
-      } finally {
-        this.isProductsDataLoading = false;
-      }
+    ...mapActions(['moduleProducts/loadProductsData']),
+
+    loadProductsData() {
+      this.$store.dispatch('moduleProducts/loadProductsData', {
+        limit: this.productsPerPage,
+        page: this.currentPage,
+        minPrice: this.minPrice,
+        maxPrice: this.maxPrice,
+        categoryId: this.categoryId,
+        colorIds: this.colorIds,
+        materialIds: this.materialIds,
+        seasonIds: this.seasonIds,
+      });
     },
   },
   watch: {
-    currentPage() {
+    watchableStates() {
       this.loadProductsData();
     },
-    minPrice() {
-      this.loadProductsData();
-    },
-    maxPrice() {
-      this.loadProductsData();
-    },
-    categoryId() {
-      this.loadProductsData();
-    },
-    colorIds() {
-      this.loadProductsData();
-    },
-    materialIds() {
-      this.loadProductsData();
-    },
-    seasonIds() {
-      this.loadProductsData();
+    "$route.params.categoryId": {
+      handler() {
+        this.categoryId = this.$route.params.categoryId ? this.$route.params.categoryId : 0;
+      },
+      immediate: true,
     },
   },
   created() {
@@ -154,5 +139,4 @@ export default {
 };
 </script>
 
-<style scoped lang="stylus">
-</style>
+<style scoped lang="stylus"></style>
