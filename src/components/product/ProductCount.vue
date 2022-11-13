@@ -15,7 +15,11 @@
       <input type="text" v-model.number="computedAmount" name="count" id="productCountInput" />
     </label>
 
-    <button type="button" aria-label="Добавить один товар" @click.prevent="computedAmount++">
+    <button
+      type="button"
+      aria-label="Добавить один товар"
+      @click.prevent="computedAmount++"
+    >
       <svg width="12" height="12" fill="currentColor">
         <use xlink:href="#icon-plus"></use>
       </svg>

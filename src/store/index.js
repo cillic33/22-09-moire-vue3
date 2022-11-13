@@ -214,6 +214,46 @@ const moduleDeliveries = {
   },
 };
 
+const modulePayments = {
+  namespaced: true,
+
+  state: {
+    paymentsData: null,
+    isPaymentsDataLoading: false,
+    paymentsDataLoadingFail: "",
+  },
+  mutations: {
+    updatePaymentsData(state, data) {
+      state.paymentsData = data;
+    },
+    updateIsPaymentsDataLoading(state, data) {
+      state.isPaymentsDataLoading = data;
+    },
+    updatePaymentsDataLoadingFail(state, data) {
+      state.paymentsDataLoadingFail = data;
+    },
+  },
+  getters: {
+    firstPaymentId(state) {
+      return state.paymentsData ? state.paymentsData[0].id : undefined;
+    },
+  },
+  actions: {
+    async loadPaymentsData(context, deliveryTypeId) {
+      try {
+        context.commit("updateIsPaymentsDataLoading", true);
+        context.commit("updatePaymentsDataLoadingFail", "");
+        const response = await AxiosApi.getPayments(deliveryTypeId);
+        context.commit("updatePaymentsData", response.data);
+      } catch (error) {
+        context.commit("updatePaymentsDataLoadingFail", error.message);
+      } finally {
+        context.commit("updateIsPaymentsDataLoading", false);
+      }
+    },
+  },
+};
+
 const moduleProduct = {
   namespaced: true,
 
@@ -234,16 +274,231 @@ const moduleProduct = {
     },
   },
   actions: {
-    async loadProductData(context, payload) {
+    async loadProductData(context, id) {
       try {
         context.commit("updateIsProductDataLoading", true);
         context.commit("updateProductDataLoadingFail", "");
-        const response = await AxiosApi.getProduct(payload);
+        const response = await AxiosApi.getProduct(id);
         context.commit("updateProductData", response.data);
       } catch (error) {
         context.commit("updateProductDataLoadingFail", error.message);
       } finally {
         context.commit("updateIsProductDataLoading", false);
+      }
+    },
+  },
+};
+
+const moduleBasket = {
+  namespaced: true,
+
+  state: {
+    basketData: null,
+    isBasketDataLoading: false,
+    basketDataLoadingFail: "",
+
+    isBasketAddingSuccess: false,
+    basketAddingFail: "",
+
+    isBasketDataChanging: false,
+    isBasketChangeSuccess: false,
+    basketChangeFail: "",
+
+    isBasketDeleteSuccess: false,
+  },
+  mutations: {
+    updateBasketData(state, data) {
+      state.basketData = data;
+    },
+    updateIsBasketDataLoading(state, data) {
+      state.isBasketDataLoading = data;
+    },
+    updateBasketDataLoadingFail(state, data) {
+      state.basketDataLoadingFail = data;
+    },
+    updateIsBasketAddingSuccess(state, data) {
+      state.isBasketAddingSuccess = data;
+    },
+    updateBasketAddingFail(state, data) {
+      state.basketAddingFail = data;
+    },
+    updateIsBasketDataChanging(state, data) {
+      state.isBasketDataChanging = data;
+    },
+    updateIsBasketChangeSuccess(state, data) {
+      state.isBasketChangeSuccess = data;
+    },
+    updateBasketChangeFail(state, data) {
+      state.basketChangeFail = data;
+    },
+    updateIsBasketDeleteSuccess(state, data) {
+      state.isBasketDeleteSuccess = data;
+    },
+  },
+  getters: {
+    basketCount(state) {
+      return state.basketData ? state.basketData.items.length : 0;
+    },
+    basketTotalPrice(state) {
+      return state.basketData
+        ? state.basketData.items.reduce((acc, item) => acc + item.price * item.quantity, 0)
+        : 0;
+    },
+  },
+  actions: {
+    async loadBasketData(context) {
+      try {
+        context.commit("updateIsBasketDataLoading", true);
+        context.commit("updateBasketDataLoadingFail", "");
+        const userAccessKey = context.rootGetters["moduleUser/getUserAccessKey"];
+        const response = await AxiosApi.getBasket(userAccessKey);
+        context.commit("updateBasketData", response.data);
+        if (userAccessKey === "") {
+          context.commit("moduleUser/updateUserAccessKey", response.data.user.accessKey, {
+            root: true,
+          });
+        }
+      } catch (error) {
+        context.commit("updateBasketDataLoadingFail", error.message);
+      } finally {
+        context.commit("updateIsBasketDataLoading", false);
+      }
+    },
+    async addToBasket(context, body) {
+      try {
+        context.commit("updateIsBasketDataLoading", true);
+        context.commit("updateIsBasketAddingSuccess", false);
+        context.commit("updateBasketAddingFail", "");
+        const userAccessKey = context.rootGetters["moduleUser/getUserAccessKey"];
+        const response = await AxiosApi.postBasket(userAccessKey, body);
+        context.commit("updateBasketData", response.data);
+        if (userAccessKey === "") {
+          context.commit("moduleUser/updateUserAccessKey", response.data.user.accessKey, {
+            root: true,
+          });
+        }
+        context.commit("updateIsBasketAddingSuccess", true);
+      } catch (error) {
+        context.commit("updateBasketAddingFail", error.message);
+        context.commit("updateIsBasketAddingSuccess", false);
+      } finally {
+        context.commit("updateIsBasketDataLoading", false);
+      }
+    },
+    async changeBasket(context, body) {
+      try {
+        context.commit("updateIsBasketDataChanging", true);
+        context.commit("updateIsBasketChangeSuccess", false);
+        context.commit("updateBasketChangeFail", "");
+        const userAccessKey = context.rootGetters["moduleUser/getUserAccessKey"];
+        const response = await AxiosApi.putBasket(userAccessKey, body);
+        context.commit("updateBasketData", response.data);
+        if (userAccessKey === "") {
+          context.commit("moduleUser/updateUserAccessKey", response.data.user.accessKey, {
+            root: true,
+          });
+        }
+        context.commit("updateIsBasketChangeSuccess", true);
+      } catch (error) {
+        context.commit("updateBasketChangeFail", error.message);
+        context.commit("updateIsBasketChangeSuccess", false);
+      } finally {
+        context.commit("updateIsBasketDataChanging", false);
+      }
+    },
+    async deleteFromBasket(context, body) {
+      try {
+        context.commit("updateIsBasketDataChanging", true);
+        context.commit("updateIsBasketDeleteSuccess", false);
+        context.commit("updateBasketChangeFail", "");
+        const userAccessKey = context.rootGetters["moduleUser/getUserAccessKey"];
+        const response = await AxiosApi.deleteBasket(userAccessKey, body);
+        context.commit("updateBasketData", response.data);
+        if (userAccessKey === "") {
+          context.commit("moduleUser/updateUserAccessKey", response.data.user.accessKey, {
+            root: true,
+          });
+        }
+        context.commit("updateIsBasketDeleteSuccess", true);
+      } catch (error) {
+        context.commit("updateBasketChangeFail", error.message);
+        context.commit("updateIsBasketDeleteSuccess", false);
+      } finally {
+        context.commit("updateIsBasketDataChanging", false);
+      }
+    },
+  },
+};
+
+const moduleUser = {
+  namespaced: true,
+
+  state: {
+    userAccessKey: "",
+  },
+  mutations: {
+    updateUserAccessKey(state, userAccessKey) {
+      state.userAccessKey = userAccessKey;
+      localStorage.setItem("userAccessKey", userAccessKey);
+    },
+  },
+  getters: {
+    getUserAccessKey(state) {
+      return state.userAccessKey;
+    },
+  },
+};
+
+const moduleOrder = {
+  namespaced: true,
+
+  state: {
+    orderData: null,
+    isOrderDataLoading: false,
+    orderDataLoadingFail: "",
+    orderDataLoadingErrors: {},
+  },
+  mutations: {
+    updateOrderData(state, data) {
+      state.orderData = data;
+    },
+    updateIsOrderDataLoading(state, data) {
+      state.isOrderDataLoading = data;
+    },
+    updateOrderDataLoadingFail(state, data) {
+      state.orderDataLoadingFail = data;
+    },
+    updateOrderDataLoadingErrors(state, data) {
+      state.orderDataLoadingErrors = data;
+    },
+  },
+  actions: {
+    async sendOrder(context, data) {
+      try {
+        context.commit("updateIsOrderDataLoading", true);
+        context.commit("updateOrderDataLoadingFail", "");
+        context.commit("updateOrderDataLoadingErrors", {});
+        const userAccessKey = context.rootGetters["moduleUser/getUserAccessKey"];
+        const response = await AxiosApi.postOrder(userAccessKey, data);
+        context.commit("updateOrderData", response.data);
+      } catch (error) {
+        context.commit("updateOrderDataLoadingFail", error.response.data.error.message);
+        context.commit("updateOrderDataLoadingErrors", error.response.data.error.request);
+      } finally {
+        context.commit("updateIsOrderDataLoading", false);
+      }
+    },
+    async loadOrderData(context, data) {
+      try {
+        context.commit("updateIsOrderDataLoading", true);
+        context.commit("updateOrderDataLoadingFail", "");
+        const userAccessKey = context.rootGetters["moduleUser/getUserAccessKey"];
+        const response = await AxiosApi.getOrder(userAccessKey, data);
+        context.commit("updateOrderData", response.data);
+      } catch (error) {
+        context.commit("updateOrderDataLoadingFail", error.message);
+      } finally {
+        context.commit("updateIsOrderDataLoading", false);
       }
     },
   },
@@ -257,7 +512,11 @@ const store = new Vuex.Store({
     moduleMaterials,
     moduleSeasons,
     moduleDeliveries,
+    modulePayments,
     moduleProduct,
+    moduleBasket,
+    moduleUser,
+    moduleOrder,
   },
 });
 

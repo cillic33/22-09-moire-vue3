@@ -6,7 +6,7 @@
 
     <div v-else>
       <div v-for="delivery in deliveries" :key="delivery.id">
-        {{ delivery.title }} - {{ delivery.price }}
+        {{ delivery.title }} - {{ delivery.price | numberFormat }} ₽
       </div>
     </div>
   </div>
@@ -14,9 +14,13 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
+import numberFormat from "@/helpers/numberFormat";
 
 export default {
   name: "ProductTabDelivery",
+  filters: {
+    numberFormat,
+  },
   computed: {
     ...mapState({
       deliveriesData: (state) => state.moduleDeliveries.deliveriesData,
@@ -28,10 +32,9 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['moduleDeliveries/loadDeliveriesData']),
-    loadDeliveriesData() {
-      this.$store.dispatch('moduleDeliveries/loadDeliveriesData');
-    },
+    ...mapActions({
+      loadDeliveriesData: "moduleDeliveries/loadDeliveriesData",
+    }),
   },
   created() {
     this.loadDeliveriesData();

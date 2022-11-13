@@ -41,7 +41,9 @@
           >
             Произошла ошибка загрузки товаров:<br />
             "{{ productsDataLoadingFail }}"<br /><br />
-            <button type="button" @click.prevent="loadProductsData">Попробуйте еще раз</button>
+            <button type="button" class="custom-button" @click.prevent="loadProductsData">
+              Попробуйте еще раз
+            </button>
           </div>
 
           <div v-else key="products" class="transition-fade-duration">
@@ -54,7 +56,7 @@
                 v-model="currentPage"
               />
             </div>
-            <div v-else сlass="note__error">Ничего не найдено</div>
+            <div v-else сlass="note__error">Ничего не найдено.<br>Измените параметры фильтра.</div>
           </div>
         </transition>
       </div>
@@ -128,7 +130,9 @@ export default {
     },
     "$route.params.categoryId": {
       handler() {
-        this.categoryId = this.$route.params.categoryId ? this.$route.params.categoryId : 0;
+        this.categoryId = this.$route.params.categoryId
+          ? this.$route.params.categoryId
+          : 0;
       },
       immediate: true,
     },

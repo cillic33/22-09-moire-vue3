@@ -11,9 +11,24 @@
 <script>
 import BaseHeader from "@/components/base/BaseHeader.vue";
 import BaseFooter from "@/components/base/BaseFooter.vue";
+import { mapMutations, mapActions } from "vuex";
 
 export default {
-  components: { BaseHeader, BaseFooter },
+  components: {
+    BaseHeader,
+    BaseFooter,
+  },
+  methods: {
+    ...mapMutations(["moduleUser/updateUserAccessKey"]),
+    ...mapActions(["moduleBasket/loadBasketData"]),
+  },
+  created() {
+    const userAccessKey = localStorage.getItem("userAccessKey");
+    if (userAccessKey) {
+      this.$store.commit("moduleUser/updateUserAccessKey", userAccessKey);
+      this.$store.dispatch("moduleBasket/loadBasketData", userAccessKey);
+    }
+  },
 };
 </script>
 
@@ -34,4 +49,40 @@ export default {
 
 .transition-fade-duration
   animation-duration: 0.3s
+
+.notification
+  background #319171 !important
+  color #fff
+  margin 5px 0 0 0
+  border-radius 5px
+  padding 8px 12px
+  text-align center !important
+
+  &.error
+    background #ad3c34 !important
+
+  &-content
+    > p
+      display block
+      margin 0 0 6px 0
+
+    > a
+      color #ffffff
+      text-decoration underline
+
+      &:hover
+        text-decoration none
+
+.custom-button
+  display inline-block
+  background #e02d71
+  border none
+  font-size 15px
+  line-height 1
+  color #fff
+  padding 12px 20px
+  cursor pointer
+
+  &:hover
+    background #150C26
 </style>

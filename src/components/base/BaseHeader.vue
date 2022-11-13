@@ -18,14 +18,24 @@
         <svg width="19" height="24">
           <use xlink:href="#icon-cart"></use>
         </svg>
-        <span class="header__count" aria-label="Количество товаров">0</span>
+        <span class="header__count" aria-label="Количество товаров">{{ basketCount }}</span>
       </router-link>
     </div>
+
+    <notifications position="top center"
+                   classes="notification"
+    />
   </header>
 </template>
 
 <script>
-export default {};
+import { mapGetters } from "vuex";
+
+export default {
+  computed: {
+    ...mapGetters({ basketCount: "moduleBasket/basketCount" }),
+  },
+};
 </script>
 
 <style scoped></style>

@@ -17,5 +17,10 @@ module.exports = {
     'vuejs-accessibility/click-events-have-key-events': 'off',
     "prefer-destructuring": ["error", {"object": true, "array": false}],
     "operator-linebreak": ["error", "after", { "overrides": { "?": "before", ":": "before" } }],
+    "vuejs-accessibility/label-has-for": ["error", {
+      "required": {
+        "some": ["nesting", "id"]
+      }
+    }]
   },
 };

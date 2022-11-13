@@ -51,7 +51,9 @@
             >
               Произошла ошибка загрузки категорий:<br />
               "{{ categoriesDataLoadingFail }}"<br /><br />
-              <button type="button" @click.prevent="loadCategoriesData">Попробуйте еще раз</button>
+              <button type="button" class="custom-button" @click.prevent="loadCategoriesData">
+                Попробуйте еще раз
+              </button>
             </div>
 
             <div v-else key="categoriesData" class="transition-fade-duration">
@@ -59,7 +61,7 @@
                 class="form__select"
                 name="category"
                 id="filterSelectCategory"
-                v-model="currentCategoryId"
+                v-model.number="currentCategoryId"
               >
                 <option value="0">Все категории</option>
                 <option v-for="category in categories" :key="category.id" :value="category.id">
@@ -95,7 +97,9 @@
           >
             Произошла ошибка загрузки цветов:<br />
             "{{ colorsDataLoadingFail }}"<br /><br />
-            <button type="button" @click.prevent="loadColorsData">Попробуйте еще раз</button>
+            <button type="button" class="custom-button" @click.prevent="loadColorsData">
+              Попробуйте еще раз
+            </button>
           </div>
 
           <ul v-else key="colorsData" class="check-list check-list-color transition-fade-duration">
@@ -149,7 +153,9 @@
           >
             Произошла ошибка загрузки материалов:<br />
             "{{ materialsDataLoadingFail }}"<br /><br />
-            <button type="button" @click.prevent="loadMaterialsData">Попробуйте еще раз</button>
+            <button type="button" class="custom-button" @click.prevent="loadMaterialsData">
+              Попробуйте еще раз
+            </button>
           </div>
 
           <ul v-else key="materialsData" class="check-list transition-fade-duration">
@@ -197,7 +203,9 @@
           >
             Произошла ошибка загрузки коллекций:<br />
             "{{ seasonsDataLoadingFail }}"<br /><br />
-            <button type="button" @click.prevent="loadSeasonsData">Попробуйте еще раз</button>
+            <button type="button" class="custom-button" @click.prevent="loadSeasonsData">
+              Попробуйте еще раз
+            </button>
           </div>
 
           <ul v-else key="seasonsData" class="check-list transition-fade-duration">
