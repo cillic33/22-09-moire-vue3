@@ -404,14 +404,18 @@ export default {
 
     &__color-round
       display inline-block
-      width 22px
-      height 22px
+      width 20px
+      height 20px
       border-radius 50%
-      border 2px solid #bfbfbf
+      border 1px solid #bbb
 
   .check-list__check
-    &:checked
-      + .check-list__desc
-        .check-list__desc__color-round
-          outline 1px solid #000000
+    + .check-list__desc
+      border 2px solid transparent
+    &:checked + .check-list__desc,
+    &:hover + .check-list__desc
+        outline 1px solid #777
+        width 24px
+        height 24px
+        border-radius 50%
 </style>

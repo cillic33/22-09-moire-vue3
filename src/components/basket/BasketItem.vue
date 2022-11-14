@@ -111,4 +111,8 @@ export default {
 
   &__del
     cursor pointer
+
+  &__info--color
+    > span > i
+      border 1px solid #bbb
 </style>

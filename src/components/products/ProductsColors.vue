@@ -48,8 +48,10 @@ export default {
 
 <style scoped lang="stylus">
 .colors__value
-  outline 1px solid #bfbfbf
+  border 1px solid #bbb
 
+.colors__label:hover .colors__value::before,
+.colors__label:focus .colors__value::before,
 .colors__radio:checked ~ .colors__value::before
-  border-color var(--border-color)
+  border-color #777
 </style>
