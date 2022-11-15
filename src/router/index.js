@@ -6,7 +6,6 @@ import NotFoundPage from "@/pages/NotFoundPage.vue";
 import BasketPage from "@/pages/BasketPage.vue";
 import OrderPage from "@/pages/OrderPage.vue";
 import OrderSuccessPage from "@/pages/OrderSuccessPage.vue";
-import TestPage from "@/pages/TestPage.vue";
 
 Vue.use(VueRouter);
 
@@ -16,7 +15,6 @@ const routes = [
   { name: "cart", component: BasketPage, path: "/cart" },
   { name: "order", component: OrderPage, path: "/order" },
   { name: "orderSuccess", component: OrderSuccessPage, path: "/order-success/:id" },
-  { name: "test", component: TestPage, path: "/test" },
   { name: "404", component: NotFoundPage, path: "*" },
 ];
 

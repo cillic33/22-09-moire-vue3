@@ -14,13 +14,12 @@
       name="address"
       title="Адрес доставки"
     />
-    <FormFieldText
+    <FormFieldPhone
       v-model="computedData.phone"
       :error="errors.phone ? errors.phone : ''"
       placeholder="Введите ваш телефон"
       name="phone"
       title="Телефон"
-      type="tel"
     />
     <FormFieldText
       v-model="computedData.email"
@@ -43,6 +42,7 @@
 <script>
 import FormFieldText from "@/components/forms/FormFieldText.vue";
 import FormFieldTextarea from "@/components/forms/FormFieldTextarea.vue";
+import FormFieldPhone from "@/components/forms/FormFieldPhone.vue";
 
 export default {
   props: {
@@ -61,6 +61,7 @@ export default {
     };
   },
   components: {
+    FormFieldPhone,
     FormFieldText,
     FormFieldTextarea,
   },
