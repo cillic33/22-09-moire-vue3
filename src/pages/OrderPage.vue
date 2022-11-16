@@ -37,10 +37,17 @@
           />
 
           <div class="cart__total">
-            <p>Доставка: <b>бесплатно</b></p>
             <p>
-              Итого: <b>{{ basketCount }}</b>
-              товара на сумму <b>{{ basketTotalPrice | numberFormat }} ₽</b>
+              {{ deliveryTitle }}:
+              <b v-if="deliveryPrice === '0'">бесплатно</b>
+              <b v-else>{{ deliveryPrice | numberFormat }} ₽</b>
+            </p>
+            <p>
+              <b>{{ basketCount }}</b> товара на сумму
+              <b>{{ basketTotalPrice | numberFormat }} ₽</b>
+            </p>
+            <p>
+              Итого: <b>{{ totalPrice | numberFormat }} ₽</b>
             </p>
           </div>
 
@@ -97,6 +104,8 @@ export default {
       isOrderDataLoading: (state) => state.moduleOrder.isOrderDataLoading,
       orderDataLoadingFail: (state) => state.moduleOrder.orderDataLoadingFail,
       orderDataLoadingErrors: (state) => state.moduleOrder.orderDataLoadingErrors,
+
+      deliveriesData: (state) => state.moduleDeliveries.deliveriesData,
     }),
     ...mapGetters({
       basketCount: "moduleBasket/basketCount",
@@ -104,6 +113,19 @@ export default {
     }),
     basketProducts() {
       return this.basketData ? this.basketData.items : [];
+    },
+    deliveryTitle() {
+      return this.deliveriesData
+        ? this.deliveriesData.find((d) => d.id === this.deliveryTypeId).title
+        : '';
+    },
+    deliveryPrice() {
+      return this.deliveriesData
+        ? this.deliveriesData.find((d) => d.id === this.deliveryTypeId).price
+        : 0;
+    },
+    totalPrice() {
+      return parseInt(this.basketTotalPrice, 10) + parseInt(this.deliveryPrice, 10);
     },
   },
   methods: {
