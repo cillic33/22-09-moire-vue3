@@ -26,7 +26,7 @@
       <div
         v-if="isBasketDataLoading"
         key="isBasketDataLoading"
-        class="note__centered transition-fade-duration"
+        class="note__centered"
       >
         <fulfilling-bouncing-circle-spinner
           :animation-duration="4000"
@@ -40,7 +40,7 @@
       <div
         v-else-if="basketDataLoadingFail"
         key="basketDataLoadingFail"
-        class="note__error note__centered transition-fade-duration"
+        class="note__error note__centered"
       >
         Произошла ошибка загрузки корзины:<br/>
         "{{ basketDataLoadingFail }}"<br/><br/>
@@ -62,7 +62,7 @@
             <router-link :to="{name: 'order'}"
                          tag="button"
                          class="cart__button button button--primery"
-                         :disabled="basketCount === 0"
+                         :disabled="basketCount === 0 || isBasketDataChanging"
             >
               Оформить заказ
             </router-link>
@@ -96,6 +96,7 @@ export default {
       basketData: (state) => state.moduleBasket.basketData,
       isBasketDataLoading: (state) => state.moduleBasket.isBasketDataLoading,
       basketDataLoadingFail: (state) => state.moduleBasket.basketDataLoadingFail,
+      isBasketDataChanging: (state) => state.moduleBasket.isBasketDataChanging,
     }),
     ...mapGetters({
       basketCount: "moduleBasket/basketCount",
@@ -104,9 +105,6 @@ export default {
     basket() {
       return this.basketData ? this.basketData : {};
     },
-    /* computedTotal() {
-      return this.basketData.items.reduce((acc, p) => acc + (p.price * p.quantity), 0);
-    }, */
   },
   methods: {
     ...mapActions({ loadBasketData: "moduleBasket/loadBasketData" }),

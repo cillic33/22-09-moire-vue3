@@ -22,10 +22,13 @@
 
           <div class="cart__options-error">{{ orderDataLoadingErrors.deliveryTypeId }}</div>
           <div class="cart__options">
-            <OrderDelivery :delivery-type-id.sync="deliveryTypeId"/>
+            <OrderDelivery
+              :delivery-type-id.sync="deliveryTypeId"
+            />
             <br>
-            <OrderPayment :payment-type-id.sync="paymentTypeId"
-                          :delivery-type-id="deliveryTypeId"
+            <OrderPayment
+              :delivery-type-id="deliveryTypeId"
+              :payment-type-id.sync="paymentTypeId"
             />
           </div>
         </div>

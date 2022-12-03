@@ -3,7 +3,7 @@
   <transition name="fade" mode="out-in">
     <div v-if="isPaymentsDataLoading"
          key="isPaymentsDataLoading"
-         class="note__centered transition-fade-duration"
+         class="note__centered"
     >
       <fulfilling-bouncing-circle-spinner
         :animation-duration="4000"
@@ -16,7 +16,7 @@
 
     <div v-else-if="paymentsDataLoadingFail"
          key="paymentsDataLoadingFail"
-         class="note__error note__centered transition-fade-duration"
+         class="note__error note__centered"
     >
       Произошла ошибка загрузки оплаты<br>
       "{{ paymentsDataLoadingFail }}"<br/><br/>
@@ -59,11 +59,11 @@ import { FulfillingBouncingCircleSpinner } from "epic-spinners";
 
 export default {
   props: {
-    paymentTypeId: {
+    deliveryTypeId: {
       type: Number,
       required: true,
     },
-    deliveryTypeId: {
+    paymentTypeId: {
       type: Number,
       required: true,
     },

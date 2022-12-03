@@ -23,9 +23,12 @@ export default {
   },
   computed: {
     ...mapState({
-      deliveriesData: (state) => state.moduleDeliveries.deliveriesData,
-      isDeliveriesDataLoading: (state) => state.moduleDeliveries.isDeliveriesDataLoading,
-      deliveriesDataLoadingFail: (state) => state.moduleDeliveries.deliveriesDataLoadingFail,
+      deliveriesData:
+        (state) => state.moduleDeliveries.deliveriesData,
+      isDeliveriesDataLoading:
+        (state) => state.moduleDeliveries.isDeliveriesDataLoading,
+      deliveriesDataLoadingFail:
+        (state) => state.moduleDeliveries.deliveriesDataLoadingFail,
     }),
     deliveries() {
       return this.deliveriesData ? this.deliveriesData : [];

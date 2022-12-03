@@ -7,7 +7,7 @@
       <div
         v-if="isProductDataLoading"
         key="isProductDataLoading"
-        class="note__centered transition-fade-duration"
+        class="note__centered"
       >
         <fulfilling-bouncing-circle-spinner
           :animation-duration="4000"
@@ -21,7 +21,7 @@
       <div
         v-else-if="productDataLoadingFail"
         key="productDataLoadingFail"
-        class="note__error note__centered transition-fade-duration"
+        class="note__error note__centered"
       >
         Произошла ошибка загрузки товара:<br/>
         "{{ productDataLoadingFail }}"<br/><br/>
@@ -107,7 +107,6 @@
                 <button
                   :class="['tabs__link', { 'tabs__link--current': tab.name === currentTab }]"
                   @click="currentTab = tab.name"
-                  :content="product.content"
                 >
                   {{ tab.title }}
                 </button>

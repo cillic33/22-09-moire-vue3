@@ -1,53 +1,54 @@
 <template>
 
-    <transition name="fade" mode="out-in">
-      <div v-if="isDeliveriesDataLoading"
-           key="isDeliveriesDataLoading"
-           class="note__centered transition-fade-duration"
-      >
-        <fulfilling-bouncing-circle-spinner
-          :animation-duration="4000"
-          :size="30"
-          :color="'#e02d71'"
-        />
-        <br/>
-        Данные по доставке загружаются...
-      </div>
+  <transition name="fade" mode="out-in">
+    <div v-if="isDeliveriesDataLoading"
+         key="isDeliveriesDataLoading"
+         class="note__centered"
+    >
+      <fulfilling-bouncing-circle-spinner
+        :animation-duration="4000"
+        :size="30"
+        :color="'#e02d71'"
+      />
+      <br/>
+      Данные по доставке загружаются...
+    </div>
 
-      <div v-else-if="deliveriesDataLoadingFail"
-           key="deliveriesDataLoadingFail"
-           class="note__error note__centered transition-fade-duration"
-      >
-        Произошла ошибка загрузки доставок<br>
-        "{{ deliveriesDataLoadingFail }}"<br/><br/>
-        <button type="button" class="custom-button" @click.prevent="loadDeliveriesData()">
-          Попробуйте еще раз
-        </button>
-      </div>
+    <div v-else-if="deliveriesDataLoadingFail"
+         key="deliveriesDataLoadingFail"
+         class="note__error note__centered"
+    >
+      Произошла ошибка загрузки доставок<br>
+      "{{ deliveriesDataLoadingFail }}"<br/><br/>
+      <button type="button" class="custom-button" @click.prevent="loadDeliveriesData()">
+        Попробуйте еще раз
+      </button>
+    </div>
 
-      <div v-else
-           key="deliveriesData"
-           class="deliveries__block"
-      >
-        <h3 class="cart__title">Доставка</h3>
-        <ul class="cart__options options">
-          <li class="options__item" v-for="delivery in deliveries" :key="delivery.id">
-            <label class="options__label">
-              <input class="options__radio sr-only"
-                     type="radio"
-                     name="delivery"
-                     :value="delivery.id"
-                     v-model="computedDeliveryTypeId"
-                     :checked="delivery.id === 1"
-              >
-              <span class="options__value">
+    <div v-else
+         key="deliveriesData"
+         class="deliveries__block"
+    >
+      <h3 class="cart__title">Доставка</h3>
+      <ul class="cart__options options">
+        <li class="options__item" v-for="delivery in deliveries" :key="delivery.id">
+          <label class="options__label">
+            <input
+              class="options__radio sr-only"
+              type="radio"
+              name="delivery"
+              :value="delivery.id"
+              v-model="computedDeliveryTypeId"
+              :checked="delivery.id === 1"
+            >
+            <span class="options__value">
               {{ delivery.title }} <b>{{ delivery.price | numberFormat }} ₽</b>
             </span>
-            </label>
-          </li>
-        </ul>
-      </div>
-    </transition>
+          </label>
+        </li>
+      </ul>
+    </div>
+  </transition>
 
 </template>
 

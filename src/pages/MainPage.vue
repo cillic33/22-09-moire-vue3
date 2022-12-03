@@ -23,37 +23,37 @@
           <div
             v-if="isProductsDataLoading"
             key="isProductsDataLoading"
-            class="note__centered transition-fade-duration"
+            class="note__centered"
           >
             <fulfilling-bouncing-circle-spinner
               :animation-duration="4000"
               :size="30"
               :color="'#e02d71'"
             />
-            <br />
+            <br/>
             Товары загружаются...
           </div>
 
           <div
             v-else-if="productsDataLoadingFail"
             key="productsDataLoadingFail"
-            class="note__error note__centered transition-fade-duration"
+            class="note__error note__centered"
           >
-            Произошла ошибка загрузки товаров:<br />
-            "{{ productsDataLoadingFail }}"<br /><br />
+            Произошла ошибка загрузки товаров:<br/>
+            "{{ productsDataLoadingFail }}"<br/><br/>
             <button type="button" class="custom-button" @click.prevent="loadProductsData">
               Попробуйте еще раз
             </button>
           </div>
 
-          <div v-else key="products" class="transition-fade-duration">
+          <div v-else key="products">
             <div v-if="productsCount">
-              <ProductsList :products="products" />
+              <ProductsList :products="products"/>
               <BasePagination
                 v-if="productsCount > productsPerPage"
-                :products-count="productsCount"
-                :products-per-page="productsPerPage"
                 v-model="currentPage"
+                :count="productsCount"
+                :per-page="productsPerPage"
               />
             </div>
             <div v-else сlass="note__error">Ничего не найдено.<br>Измените параметры фильтра.</div>
@@ -94,9 +94,12 @@ export default {
   },
   computed: {
     ...mapState({
-      productsData: (state) => state.moduleProducts.productsData,
-      isProductsDataLoading: (state) => state.moduleProducts.isProductsDataLoading,
-      productsDataLoadingFail: (state) => state.moduleProducts.productsDataLoadingFail,
+      productsData:
+        (state) => state.moduleProducts.productsData,
+      isProductsDataLoading:
+        (state) => state.moduleProducts.isProductsDataLoading,
+      productsDataLoadingFail:
+        (state) => state.moduleProducts.productsDataLoadingFail,
     }),
     products() {
       return this.productsData ? this.productsData.items : [];
@@ -105,7 +108,15 @@ export default {
       return this.productsData ? this.productsData.pagination.total : 0;
     },
     watchableStates() {
-      return `${this.currentPage}${this.minPrice}${this.maxPrice}${this.categoryId}${this.colorIds}${this.materialIds}${this.seasonIds}`;
+      return `
+        ${this.currentPage}
+        ${this.minPrice}
+        ${this.maxPrice}
+        ${this.categoryId}
+        ${this.colorIds}
+        ${this.materialIds}
+        ${this.seasonIds}
+      `;
     },
   },
   methods: {

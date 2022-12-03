@@ -41,23 +41,23 @@
 <script>
 export default {
   props: {
-    productsCount: {
-      type: Number,
-      required: true,
-    },
-    productsPerPage: {
-      type: Number,
-      required: true,
-    },
     value: {
       type: Number,
       required: true,
       default: 1,
     },
+    count: {
+      type: Number,
+      required: true,
+    },
+    perPage: {
+      type: Number,
+      required: true,
+    },
   },
   computed: {
     countPages() {
-      return Math.ceil(this.productsCount / this.productsPerPage);
+      return Math.ceil(this.count / this.perPage);
     },
     currentPage: {
       get() {

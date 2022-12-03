@@ -1,10 +1,11 @@
 <template>
   <label class="form__label">
-      <textarea class="form__input form__input--area"
-                :name="name"
-                :placeholder="placeholder"
-                v-model="computedData"
-      ></textarea>
+    <textarea
+      class="form__input form__input--area"
+      :name="name"
+      :placeholder="placeholder"
+      v-model="computedData"
+    ></textarea>
     <span class="form__value">{{ title }}</span>
     <span class="form__error">{{ error }}</span>
   </label>

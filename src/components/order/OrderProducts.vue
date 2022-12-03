@@ -4,7 +4,7 @@
       <div
         v-if="isLoading"
         key="isLoading"
-        class="note__centered transition-fade-duration cart__orders-note"
+        class="note__centered cart__orders-note"
       >
         <fulfilling-bouncing-circle-spinner
           :animation-duration="4000"
@@ -18,7 +18,7 @@
       <div
         v-else-if="loadingFail"
         key="loadingFail"
-        class="note__error note__centered transition-fade-duration"
+        class="note__error note__centered"
       >
         Произошла ошибка загрузки товаров:<br/>
         "{{ loadingFail }}"<br/><br/>

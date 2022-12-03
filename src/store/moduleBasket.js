@@ -11,8 +11,8 @@ const moduleBasket = {
     isBasketAddingSuccess: false,
     basketAddingFail: "",
 
+    isBasketDataChanging: false,
     basketChangeFail: "",
-
     isBasketDeleteSuccess: false,
   },
   mutations: {
@@ -30,6 +30,9 @@ const moduleBasket = {
     },
     updateBasketAddingFail(state, data) {
       state.basketAddingFail = data;
+    },
+    updateIsBasketDataChanging(state, data) {
+      state.isBasketDataChanging = data;
     },
     updateBasketChangeFail(state, data) {
       state.basketChangeFail = data;
@@ -90,6 +93,7 @@ const moduleBasket = {
     },
     async changeBasket(context, body) {
       try {
+        context.commit("updateIsBasketDataChanging", true);
         context.commit("updateBasketChangeFail", "");
         const userAccessKey = context.rootGetters["moduleUser/getUserAccessKey"];
         const response = await AxiosApi.putBasket(userAccessKey, body);
@@ -102,11 +106,12 @@ const moduleBasket = {
       } catch (error) {
         context.commit("updateBasketChangeFail", error.message);
       } finally {
-        context.commit("updateIsBasketDataLoading", false);
+        context.commit("updateIsBasketDataChanging", false);
       }
     },
     async deleteFromBasket(context, body) {
       try {
+        context.commit("updateIsBasketDataChanging", true);
         context.commit("updateIsBasketDeleteSuccess", false);
         context.commit("updateBasketChangeFail", "");
         const userAccessKey = context.rootGetters["moduleUser/getUserAccessKey"];
@@ -122,7 +127,7 @@ const moduleBasket = {
         context.commit("updateBasketChangeFail", error.message);
         context.commit("updateIsBasketDeleteSuccess", false);
       } finally {
-        context.commit("updateIsBasketDataLoading", false);
+        context.commit("updateIsBasketDataChanging", false);
       }
     },
   },

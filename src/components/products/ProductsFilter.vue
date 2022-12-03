@@ -4,7 +4,8 @@
       <!--///////// Цена /////////-->
       <fieldset class="form__block">
         <legend class="form__legend">Цена</legend>
-        <label class="form__label form__label--price" for="filterInputMinPrice">
+        <label class="form__label form__label--price"
+               for="filterInputMinPrice">
           <input
             class="form__input"
             type="text"
@@ -35,7 +36,7 @@
             <div
               v-if="isCategoriesDataLoading"
               key="isCategoriesDataLoading"
-              class="note__centered transition-fade-duration"
+              class="note__centered"
             >
               <fulfilling-bouncing-circle-spinner
                 :animation-duration="4000"
@@ -47,7 +48,7 @@
             <div
               v-else-if="categoriesDataLoadingFail"
               key="categoriesDataLoadingFail"
-              class="note__error transition-fade-duration"
+              class="note__error"
             >
               Произошла ошибка загрузки категорий:<br />
               "{{ categoriesDataLoadingFail }}"<br /><br />
@@ -56,7 +57,7 @@
               </button>
             </div>
 
-            <div v-else key="categoriesData" class="transition-fade-duration">
+            <div v-else key="categoriesData">
               <select
                 class="form__select"
                 name="category"
@@ -81,7 +82,7 @@
           <div
             v-if="isColorsDataLoading"
             key="isColorsDataLoading"
-            class="note__centered transition-fade-duration"
+            class="note__centered"
           >
             <fulfilling-bouncing-circle-spinner
               :animation-duration="4000"
@@ -93,7 +94,7 @@
           <div
             v-else-if="colorsDataLoadingFail"
             key="colorsDataLoadingFail"
-            class="note__error transition-fade-duration"
+            class="note__error"
           >
             Произошла ошибка загрузки цветов:<br />
             "{{ colorsDataLoadingFail }}"<br /><br />
@@ -102,7 +103,7 @@
             </button>
           </div>
 
-          <ul v-else key="colorsData" class="check-list check-list-color transition-fade-duration">
+          <ul v-else key="colorsData" class="check-list check-list-color">
             <li v-for="color in colors" :key="color.id" class="check-list__item">
               <label
                 class="check-list__label"
@@ -137,7 +138,7 @@
           <div
             v-if="isMaterialsDataLoading"
             key="isMaterialsDataLoading"
-            class="note__centered transition-fade-duration"
+            class="note__centered"
           >
             <fulfilling-bouncing-circle-spinner
               :animation-duration="4000"
@@ -149,7 +150,7 @@
           <div
             v-else-if="materialsDataLoadingFail"
             key="materialsDataLoadingFail"
-            class="note__error transition-fade-duration"
+            class="note__error"
           >
             Произошла ошибка загрузки материалов:<br />
             "{{ materialsDataLoadingFail }}"<br /><br />
@@ -158,7 +159,7 @@
             </button>
           </div>
 
-          <ul v-else key="materialsData" class="check-list transition-fade-duration">
+          <ul v-else key="materialsData" class="check-list">
             <li class="check-list__item" v-for="material in materials" :key="material.id">
               <label class="check-list__label" :for="'filterInputMaterial' + material.code">
                 <input
@@ -187,7 +188,7 @@
           <div
             v-if="isSeasonsDataLoading"
             key="isSeasonsDataLoading"
-            class="note__centered transition-fade-duration"
+            class="note__centered"
           >
             <fulfilling-bouncing-circle-spinner
               :animation-duration="4000"
@@ -199,7 +200,7 @@
           <div
             v-else-if="seasonsDataLoadingFail"
             key="seasonsDataLoadingFail"
-            class="note__error transition-fade-duration"
+            class="note__error"
           >
             Произошла ошибка загрузки коллекций:<br />
             "{{ seasonsDataLoadingFail }}"<br /><br />
@@ -208,7 +209,7 @@
             </button>
           </div>
 
-          <ul v-else key="seasonsData" class="check-list transition-fade-duration">
+          <ul v-else key="seasonsData" class="check-list">
             <li class="check-list__item" v-for="season in seasons" :key="season.id">
               <label class="check-list__label" :for="'filterInputSeason' + season.code">
                 <input

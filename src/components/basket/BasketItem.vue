@@ -2,10 +2,9 @@
   <div>
     <div class="product__pic">
       <img
-        :src="item.color.gallery[0].file.url"
+        :src="itemImgUrl"
         width="120"
         height="120"
-        srcset="img/product-square-4@2x.jpg 2x"
         :alt="item.product.title"
       />
     </div>
@@ -75,6 +74,9 @@ export default {
     }),
     computedPrice() {
       return this.item.price * this.amount;
+    },
+    itemImgUrl() {
+      return this.item.color.gallery ? this.item.color.gallery[0].file.url : '/moire/img/not-img.webp';
     },
   },
   methods: {
