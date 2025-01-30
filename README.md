@@ -10,6 +10,10 @@ npm install
 npm run serve
 ```
 
+При ошибке "Linebreaks":
+В PhpStorm выделить главную категорию, в главном меню выбрать File -> File Properties -> LineSeperators -> LF
+
+
 ### Compiles and minifies for production
 ```
 npm run build
